@@ -1,0 +1,16 @@
+{{- $architecture := or .architecture "arm64" -}}
+
+architecture: {{ $architecture }}
+
+actions:
+  - action: apt
+    recommends: false
+    description: Install Capyloon packages
+    packages:
+      # Temporary workaround until chatty returns to bookworm
+      - chatty
+
+  - action: run
+    description: Disable getty in the Phosh environment
+    chroot: true
+    command: systemctl disable getty@.service

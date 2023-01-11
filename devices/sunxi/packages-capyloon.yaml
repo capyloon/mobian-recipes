@@ -1,0 +1,13 @@
+{{- $architecture := or .architecture "arm64" -}}
+{{- $device := or .device "pinephone" }}
+
+architecture: {{ $architecture }}
+
+actions:
+  - action: apt
+    recommends: false
+    description: Install device-specific package for Capyloon 
+    packages:
+{{ if eq $device "pinephone" }}
+      - capyloon-pinephone
+{{ end }}
