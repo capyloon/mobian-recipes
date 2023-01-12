@@ -5,3 +5,4 @@
 *.sqfs
 *.tar.gz
 overlays/ssh/authorized_keys
+capyloon.log
