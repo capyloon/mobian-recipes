@@ -6,11 +6,9 @@ architecture: {{ $architecture }}
 actions:
   - action: apt
     recommends: false
-    description: Install device-specific package for Capyloon 
+    description: Install device-specific package for Capyloon
     packages:
-{{ if eq $device "pinephonepro" }}
       - capyloon-pinephone
-{{ end }}
   - action: run
     description: Enable Capyloon service by default
     chroot: true

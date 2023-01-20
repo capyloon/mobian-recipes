@@ -6,8 +6,12 @@ architecture: {{ $architecture }}
 actions:
   - action: apt
     recommends: false
-    description: Install device-specific package for Capyloon 
+    description: Install device-specific package for Capyloon
     packages:
 {{ if eq $device "pinephone" }}
       - capyloon-pinephone
 {{ end }}
+  - action: run
+    description: Enable Capyloon service by default
+    chroot: true
+    command: systemctl enable capyloon.service

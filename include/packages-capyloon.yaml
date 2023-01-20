@@ -11,6 +11,6 @@ actions:
       - chatty
 
   - action: run
-    description: Disable getty in the Phosh environment
+    description: Disable getty in the Capyloon environment
     chroot: true
     command: systemctl disable getty@.service
