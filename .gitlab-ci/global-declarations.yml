@@ -32,24 +32,26 @@ workflow:
 variables:
   DEBIAN_SUITE: "bookworm"
   MOBIAN_SUITE: "bookworm"
-  MOBIAN_BOOT_PARTITION_START: "8MiB"
+  MOBIAN_BOOT_PARTITION_START: "1MiB"
   MOBIAN_FILESYSTEM: "ext4"
   MOBIAN_IMAGE_SIZE: "6GB"
+  MOBIAN_INSTALLER_SIZE: "8GB"
   MOBIAN_INCLUDE_NONFREE: "false"
   MOBIAN_MINIRAMFS: "false"
   MOBIAN_PARTITION_TABLE: "gpt"
-  MOBIAN_HAS_ESP_PARTITION: "false"
   ARTIFACTS_ROOT: /srv/builder/images
   DEVICEFS_UPLOAD: "false"
   IMAGES_ROOT: /var/www/images
   IMAGES_CI_ROOT: /var/www/ci-images
+  MOBIAN_IMAGES_HOST: mobian.org
+  MOBIAN_CACHE_HOST: amd64-ssd.runner.mobian.org
 
 .arch-amd64:
   variables:
     ARCH: amd64
     MOBIAN_DEVICE_FAMILY: "amd64"
-    MOBIAN_HAS_ESP_PARTITION: "true"
     MOBIAN_IMAGE_SIZE: "15GB"
+    MOBIAN_INSTALLER_SIZE: "10GB"
 
 .arch-arm64:
   variables:

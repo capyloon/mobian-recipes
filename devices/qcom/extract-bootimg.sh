@@ -6,17 +6,11 @@ IMAGE="$2"
 [ "$IMAGE" ] || exit 1
 
 case "${DEVICE}" in
-    "oneplus6")
-        VARIANTS="enchilada fajita"
-        ;;
-    "pocof1")
-        VARIANTS="beryllium-tianma beryllium-ebbg"
-        ;;
-    "mix2s")
-        VARIANTS="polaris"
-        ;;
     "sdm845")
-        VARIANTS="enchilada fajita beryllium-tianma beryllium-ebbg polaris"
+        VARIANTS="axolotl beryllium-tianma beryllium-ebbg enchilada fajita polaris"
+        ;;
+    "sm7225")
+        VARIANTS="fp4"
         ;;
     *)
         echo "ERROR: unsupported device ${DEVICE}"

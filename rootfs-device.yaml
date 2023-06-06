@@ -14,9 +14,9 @@ actions:
 
 {{ if eq $nonfree "true" }}
   - action: run
-    description: Enable non-free Debian repo
+    description: Enable non-free-firmware Debian repo
     chroot: true
-    command: sed -i 's/main$/main non-free/g' /etc/apt/sources.list
+    command: sed -i 's/main$/main non-free-firmware/g' /etc/apt/sources.list
 {{ end }}
 
   - action: recipe

@@ -2,13 +2,13 @@
 {{- $family := or .family "sunxi" }}
 {{- $nonfree := or .nonfree "false" -}}
 {{- $device := or .device "pinephone" }}
-{{- $partitiontable := or .partitiontable "mbr" }}
+{{- $partitiontable := or .partitiontable "gpt" }}
 {{- $filesystem := or .filesystem "ext4" }}
 {{- $environment := or .environment "phosh" -}}
 {{- $image := or .image "mobian-installer.img" -}}
+{{- $installersize := or .installersize "8GB" }}
 {{- $installfs := or .installfs "installfs.tar.gz" }}
-{{- $bootstart := or .bootstart "8MiB" }}
-{{- $has_esp_partition := or .has_esp_partition "false" }}
+{{- $bootstart := or .bootstart "1MiB" }}
 
 architecture: {{ $architecture }}
 
@@ -23,21 +23,20 @@ actions:
   - action: recipe
     recipe: include/partition-{{ $partitiontable }}.yaml
     variables:
+      bootstart: {{ $bootstart }}
       filesystem: {{ $filesystem }}
       image: {{ $image }}
-      imagesize: 8GB
-      rootstart: 4.5GiB
-      bootstart: {{ $bootstart }}
-      has_esp_partition: {{ $has_esp_partition }}
+      imagesize: {{ $installersize }}
+      installer: "true"
 
   - action: filesystem-deploy
     description: Deploy filesystem onto image
 
 {{ if eq $nonfree "true" }}
   - action: run
-    description: Enable non-free Debian repo
+    description: Enable non-free-firmware Debian repo
     chroot: true
-    command: sed -i 's/main$/main non-free/g' /etc/apt/sources.list
+    command: sed -i 's/main$/main non-free-firmware/g' /etc/apt/sources.list
 {{ end }}
 
   - action: recipe

@@ -1,5 +1,5 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $device := or .device "oneplus6" }}
+{{- $device := or .device "sdm845" }}
 {{- $image := or .image "mobian-$device" -}}
 
 architecture: {{ $architecture }}

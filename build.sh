@@ -11,6 +11,8 @@ image="image"
 partitiontable="gpt"
 filesystem="ext4"
 environment="phosh"
+crypt_root=
+crypt_password=
 hostname=
 arch="arm64"
 do_compress=
@@ -30,11 +32,12 @@ contrib=
 sign=
 miniramfs=
 verbose=
-esp="false"
 
-while getopts "dDvizobsZCrx:S:e:H:f:g:h:m:p:t:u:F:" opt
+while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:p:t:u:F:" opt
 do
   case "${opt}" in
+    c ) crypt_root=1 ;;
+    R ) crypt_password=${OPTARG} ;;
     d ) use_docker=1 ;;
     D ) debug=1 ;;
     v ) verbose=1 ;;
@@ -84,22 +87,19 @@ case "${device}" in
     family="librem5"
     ARGS="${ARGS} -t bootstart:8MiB"
     ;;
-  "oneplus6"|"pocof1" )
-    arch="arm64"
-    family="sdm845"
-    ARGS="${ARGS} -t nonfree:true"
+  "sdm845"|"sm7225" )
+    family="qcom"
+    ARGS="${ARGS} -e MKE2FS_DEVICE_SECTSIZE:4096 -t nonfree:true"
     ;;
   "amd64" )
     arch="amd64"
     family="amd64"
-    esp="true"
-    ARGS="${ARGS} -t imagesize:15GB"
+    ARGS="${ARGS} -t imagesize:15GB -t installersize:10GB"
     ;;
   "amd64-nonfree" )
     arch="amd64"
     family="amd64"
-    esp="true"
-    ARGS="${ARGS} -t nonfree:true -t imagesize:15GB"
+    ARGS="${ARGS} -t nonfree:true -t imagesize:15GB -t installersize:10GB"
     ;;
   * )
     echo "Unsupported device '${device}'"
@@ -136,6 +136,8 @@ fi
 [ "${debug}" ] && ARGS="${ARGS} --debug-shell"
 [ "${verbose}" ] && ARGS="${ARGS} --verbose"
 [ "${username}" ] && ARGS="${ARGS} -t username:${username}"
+# Must remain above password otherwise password will override this
+[ "${crypt_password}" ] && ARGS="${ARGS} -t crypt_password:${crypt_password}"
 [ "${password}" ] && ARGS="${ARGS} -t password:${password}"
 [ "${ssh}" ] && ARGS="${ARGS} -t ssh:${ssh}"
 [ "${environment}" ] && ARGS="${ARGS} -t environment:${environment}"
@@ -146,17 +148,18 @@ fi
 [ "${miniramfs}" ] && ARGS="${ARGS} -t miniramfs:true"
 [ "${contrib}" ] && ARGS="${ARGS} -t contrib:true"
 [ "${zram}" ] && ARGS="${ARGS} -t zram:true"
+[ "${crypt_root}" ] && ARGS="${ARGS} -t crypt_root:true"
 
 ARGS="${ARGS} -t architecture:${arch} -t family:${family} -t device:${device} \
             -t partitiontable:${partitiontable} -t filesystem:${filesystem} \
             -t image:${image_file} -t rootfs:${rootfs_file} -t installfs:${installfs_file} \
-            -t debian_suite:${debian_suite} -t suite:${suite} -t has_esp_partition:${esp} \
+            -t debian_suite:${debian_suite} -t suite:${suite} \
             --scratchsize=8G"
 
 if [ ! "${image_only}" ] || [ ! -f "${rootfs_file}" ]; then
-  ${DEBOS_CMD} ${ARGS} rootfs.yaml || exit 1
   # Ensure subsequent artifacts are rebuilt too
   rm -f "rootfs-${device}-${environment}.tar.gz"
+  ${DEBOS_CMD} ${ARGS} rootfs.yaml || exit 1
 fi
 
 if [ "$installer" ]; then

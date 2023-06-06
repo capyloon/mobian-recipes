@@ -1,21 +1,21 @@
 prepare-artifacts-dir:
   stage: .pre
   script:
-    - ssh gitlab-ci@mobian.org mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
 
 cleanup-artifacts-dir:
   interruptible: false
   stage: .post
   script:
-    - ssh gitlab-ci@mobian.org rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
   when: always
 
 .save-artifacts: &save-artifacts |
-  scp ${MOBIAN_ARTIFACTS} gitlab-ci@mobian.org:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+  scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
 
 .restore-artifacts: &restore-artifacts |
   for artifact in ${MOBIAN_ARTIFACTS}; do
-    scp gitlab-ci@mobian.org:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
+    scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
   done
 
 .upload-images: &upload-images |
@@ -26,9 +26,9 @@ cleanup-artifacts-dir:
     IMAGES_DIR=${IMAGES_CI_ROOT}/$(date --date="${CI_PIPELINE_CREATED_AT}" +%Y%m%d.%H%M)
     SSH_USER=gitlab-ci
   fi
-  ssh ${SSH_USER}@mobian.org mkdir -p ${IMAGES_DIR}
+  ssh ${SSH_USER}@${MOBIAN_IMAGES_HOST} mkdir -p ${IMAGES_DIR}
   for image in ${IMAGE_NAME}*; do
-    scp ${image} ${SSH_USER}@mobian.org:${IMAGES_DIR}/
+    scp ${image} ${SSH_USER}@${MOBIAN_IMAGES_HOST}:${IMAGES_DIR}/
   done
 
 .finish-images: &finish-images |
@@ -60,6 +60,7 @@ cleanup-artifacts-dir:
       -t debian_suite:${DEBIAN_SUITE}
       -t suite:${MOBIAN_SUITE}
       -t rootfs:${MOBIAN_ARTIFACTS}
+      ${MOBIAN_EXTRA_DEBOS_ARGS}
       rootfs.yaml
     - *save-artifacts
 
@@ -71,6 +72,7 @@ cleanup-artifacts-dir:
       -t architecture:${ARCH}
       -t suite:${MOBIAN_SUITE}
       -t installfs:${MOBIAN_ARTIFACTS}
+      ${MOBIAN_EXTRA_DEBOS_ARGS}
       installfs.yaml
     - *save-artifacts
 
@@ -87,6 +89,7 @@ cleanup-artifacts-dir:
       -t nonfree:${MOBIAN_INCLUDE_NONFREE}
       -t rootfs:${MOBIAN_ARTIFACTS}
       -t miniramfs:${MOBIAN_MINIRAMFS}
+      ${MOBIAN_EXTRA_DEBOS_ARGS}
       rootfs-device.yaml
     - MOBIAN_ARTIFACTS="rootfs-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}.tar.gz"
     - *save-artifacts
@@ -117,7 +120,7 @@ cleanup-artifacts-dir:
       -t rootfs:${MOBIAN_ARTIFACTS}
       -t bootstart:${MOBIAN_BOOT_PARTITION_START}
       -t miniramfs:${MOBIAN_MINIRAMFS}
-      -t has_esp_partition:${MOBIAN_HAS_ESP_PARTITION}
+      ${MOBIAN_EXTRA_DEBOS_ARGS}
       image.yaml
     - *finish-images
     - *sign-images
@@ -136,13 +139,14 @@ cleanup-artifacts-dir:
       -t environment:${MOBIAN_GRAPHICAL_SHELL}
       -t device:${MOBIAN_DEVICE_NAME}
       -t family:${MOBIAN_DEVICE_FAMILY}
-      -t nonfree:${MOBIAN_INCLUDE_NONFREE}
       -t filesystem:${MOBIAN_FILESYSTEM}
       -t image:${IMAGE_NAME}
-      -t installfs:${INSTALLFS_NAME}
+      -t nonfree:${MOBIAN_INCLUDE_NONFREE}
       -t partitiontable:${MOBIAN_PARTITION_TABLE}
+      -t installersize:${MOBIAN_INSTALLER_SIZE}
+      -t installfs:${INSTALLFS_NAME}
       -t bootstart:${MOBIAN_BOOT_PARTITION_START}
-      -t has_esp_partition:${MOBIAN_HAS_ESP_PARTITION}
+      ${MOBIAN_EXTRA_DEBOS_ARGS}
       installer.yaml
     - *finish-images
     - *sign-images

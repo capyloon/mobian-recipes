@@ -17,6 +17,11 @@ generate_bootimg() {
         FULLMODEL="${MODEL}"
     fi
 
+    # Workaround a bug in the SDHCI driver on SM7225
+    if [ "${SOC}" = "qcom/sm7225" ]; then
+        CMDLINE="${CMDLINE} sdhci.debug_quirks=0x40"
+    fi
+
     # Append DTB to kernel
     echo "Creating boot image for ${FULLMODEL}..."
     cat /boot/vmlinuz-${KERNEL_VERSION} \
@@ -33,13 +38,16 @@ ROOTPART=$(findmnt -n -o UUID /)
 KERNEL_VERSION=$(linux-version list)
 
 case "${DEVICE}" in
-    "oneplus6")
+    "sdm845")
         generate_bootimg "${ROOTPART}" "qcom/sdm845" "oneplus" "enchilada"
         generate_bootimg "${ROOTPART}" "qcom/sdm845" "oneplus" "fajita"
-        ;;
-    "pocof1")
+        generate_bootimg "${ROOTPART}" "qcom/sdm845" "shift" "axolotl"
         generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "beryllium" "tianma"
         generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "beryllium" "ebbg"
+        generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "polaris"
+        ;;
+    "sm7225")
+        generate_bootimg "${ROOTPART}" "qcom/sm7225" "fairphone" "fp4"
         ;;
     *)
         echo "ERROR: unsupported device ${DEVICE}"

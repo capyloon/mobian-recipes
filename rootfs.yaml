@@ -22,10 +22,15 @@ actions:
       - contrib
 {{ end }}
 {{ if eq $nonfree "true" }}
-      - non-free
+      - non-free-firmware
 {{ end }}
     mirror: http://deb.debian.org/debian
     variant: minbase
+
+  - action: run
+    description: Fix build on usr-merged systems
+    chroot: true
+    command: apt-get -y -f install
 
   - action: overlay
     description: Enable Mobian repository

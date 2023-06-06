@@ -7,7 +7,7 @@ apt clean
 
 # Remove machine ID so it gets generated on first boot
 rm -f /var/lib/dbus/machine-id
-truncate -s0 /etc/machine-id
+echo uninitialized > /etc/machine-id
 
 # FIXME: these are automatically installed on first boot, and block
 # the system startup for over 1 minute! Find out why this happens and

@@ -3,16 +3,13 @@
 BOOTSTART="$1"
 
 wget -O /u-boot-librem5.imx \
-https://arm01.puri.sm/job/u-boot_builds/job/uboot_librem5_mainline_build/lastSuccessfulBuild/artifact/output/uboot-librem5/u-boot-librem5.imx
-
-# Update generic symlinks to kernel/initramfs/dtbs
-KERNEL_VERSION=$(linux-version list)
-/etc/kernel/postinst.d/zz-sync-dtb "${KERNEL_VERSION}"
+https://source.puri.sm/a-wai/uboot-imx/-/jobs/422198/artifacts/raw/debian/output/u-boot.imx
 
 # Re-generate extlinux.conf to ensure we have a valid one
+KERNEL_VERSION=$(linux-version list)
 /etc/kernel/postinst.d/zz-u-boot-menu "${KERNEL_VERSION}"
 
-TARGET_DISK=$(lsblk -n -o kname,pkname,mountpoint | grep ' /$' | awk '{ print $2 }')
+TARGET_DISK=$(lsblk -n -o kname,pkname,mountpoint | grep ' /boot$' | awk '{ print $2 }')
 
 # We use parted for adding a "protective" partition for u-boot:
 # * mkpart u-boot 66s ${BOOTSTART}: create "u-boot" partition from sector 66

@@ -14,7 +14,6 @@ actions:
 {{ if eq $nonfree "true" }}
       - atmel-firmware
       - bluez-firmware
-      - firmware-ath9k-htc
       - firmware-atheros
       - firmware-bnx2
       - firmware-bnx2x
@@ -22,8 +21,9 @@ actions:
       - firmware-cavium
       - firmware-intel-sound
       - firmware-iwlwifi
-      - firmware-linux
       - firmware-libertas
+      - firmware-linux
+      - firmware-linux-nonfree
       - firmware-myricom
       - firmware-netronome
       - firmware-netxen
@@ -31,5 +31,4 @@ actions:
       - firmware-realtek
       - firmware-sof-signed
       - firmware-ti-connectivity
-      - firmware-zd1211
 {{ end }}
