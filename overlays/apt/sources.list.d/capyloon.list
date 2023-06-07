@@ -1,1 +1,1 @@
-deb [arch=arm64] https://debian.capyloon.org ./stable main
+deb [arch=arm64] http://debian.capyloon.org:8444 ./stable main

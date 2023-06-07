@@ -84,6 +84,11 @@ actions:
     destination: /etc/
 {{ end }}
 
+  - action: overlay
+    description: Add default wpa_supplicant.conf file.
+    source: overlays/wpa_supplicant/
+    destination: /etc/wpa_supplicant/
+
   - action: run
     description: Set up system
     chroot: true

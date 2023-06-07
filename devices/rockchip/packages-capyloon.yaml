@@ -9,7 +9,3 @@ actions:
     description: Install device-specific package for Capyloon
     packages:
       - capyloon-pinephone
-  - action: run
-    description: Enable Capyloon service by default
-    chroot: true
-    command: systemctl enable capyloon

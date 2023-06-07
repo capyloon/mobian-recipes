@@ -5,4 +5,5 @@
 *.sqfs
 *.tar.gz
 overlays/ssh/authorized_keys
+overlays/wpa_supplicant/wpa_supplicant*.conf
 capyloon.log
