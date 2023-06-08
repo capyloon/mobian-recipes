@@ -7,6 +7,8 @@ actions:
     recommends: false
     description: Install Capyloon packages
     packages:
+      # Wayland compositor
+      - sway
       # Temporary workaround until chatty returns to bookworm
       - chatty
 
