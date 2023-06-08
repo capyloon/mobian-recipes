@@ -7,6 +7,11 @@ actions:
     recommends: false
     description: Install Capyloon packages
     packages:
+      # Fonts needed for he cn-zh locale
+      - fonts-arphic-ukai
+      - fonts-arphic-uming
+      # Customized boot animation
+      - plymouth-theme-capyloon
       # Wayland compositor
       - sway
       # Temporary workaround until chatty returns to bookworm

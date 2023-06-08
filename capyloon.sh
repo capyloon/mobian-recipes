@@ -18,4 +18,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "About to run: './build.sh ${OPT} -e capyloon -t ${DEVICE} -s'"
-time ./build.sh ${OPT} -e capyloon -t ${DEVICE} -s 2>&1|tee capyloon.log
+time ./build.sh ${OPT} \
+    -u capyloon \
+    -e capyloon \
+    -t ${DEVICE} \
+    -s 2>&1|tee capyloon.log
