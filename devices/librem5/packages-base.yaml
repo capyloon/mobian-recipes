@@ -11,3 +11,4 @@ actions:
       - {{ $device }}-support
       - rsync
       - wget
+      - parted
