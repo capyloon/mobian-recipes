@@ -4,6 +4,7 @@
   variables:
     MOBIAN_DEVICE_FAMILY: "sunxi"
     MOBIAN_DEVICE_NAME: "pinephone"
+    MOBIAN_INCLUDE_NONFREE: "true"
     DEVICEFS_UPLOAD: "true"
 
 .device-pinephonepro:
@@ -20,6 +21,7 @@
   variables:
     MOBIAN_DEVICE_FAMILY: "sunxi"
     MOBIAN_DEVICE_NAME: "pinetab"
+    MOBIAN_INCLUDE_NONFREE: "true"
 
 .device-librem5:
   extends:

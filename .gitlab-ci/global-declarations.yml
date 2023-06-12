@@ -30,8 +30,8 @@ workflow:
     - when: never
 
 variables:
-  DEBIAN_SUITE: "bookworm"
-  MOBIAN_SUITE: "bookworm"
+  DEBIAN_SUITE: "trixie"
+  MOBIAN_SUITE: "trixie"
   MOBIAN_BOOT_PARTITION_START: "1MiB"
   MOBIAN_FILESYSTEM: "ext4"
   MOBIAN_IMAGE_SIZE: "6GB"
