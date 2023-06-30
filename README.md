@@ -13,7 +13,7 @@ To build the image, you need to have `debos` and `bmaptool`. On a debian-based
 system, install these dependencies by typing the following command in a terminal:
 
 ```
-sudo apt install debos bmap-tools f2fs-tools
+sudo apt install debos bmap-tools android-sdk-libsparse-utils xz-utils f2fs-tools
 ```
 
 Do note that the debos provided in Debian 10 (Buster) is not new enough

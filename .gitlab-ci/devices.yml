@@ -23,6 +23,13 @@
     MOBIAN_DEVICE_NAME: "pinetab"
     MOBIAN_INCLUDE_NONFREE: "true"
 
+.device-pinetab2:
+  extends:
+    - .arch-arm64
+  variables:
+    MOBIAN_DEVICE_FAMILY: "rockchip"
+    MOBIAN_DEVICE_NAME: "pinetab2"
+
 .device-librem5:
   extends:
     - .arch-arm64

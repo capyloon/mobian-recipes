@@ -85,6 +85,9 @@ case "${device}" in
     family="sunxi"
     ARGS="${ARGS} -t nonfree:true"
     ;;
+  "pinetab2" )
+    family="rockchip"
+    ;;
   "librem5" )
     family="librem5"
     ARGS="${ARGS} -t bootstart:8MiB"

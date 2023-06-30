@@ -46,6 +46,14 @@ devicefs-pinephonepro-phosh:
 #  needs:
 #    - rootfs-arm64-phosh
 
+devicefs-pinetab2-phosh:
+ extends:
+   - .devicefs
+   - .device-pinetab2
+   - .shell-phosh
+ needs:
+   - rootfs-arm64-phosh
+
 image-pinephone-phosh:
   extends:
     - .image
@@ -69,6 +77,14 @@ image-pinephonepro-phosh:
 #    - .shell-phosh
 #  needs:
 #    - rootfs-arm64-phosh
+
+image-pinetab2-phosh:
+  extends:
+    - .image
+    - .device-pinetab2
+    - .shell-phosh
+  needs:
+    - rootfs-arm64-phosh
 
 image-librem5-phosh:
   extends:
@@ -136,3 +152,12 @@ installer-pinephonepro-phosh:
 #  needs:
 #    - installfs-arm64
 #    - devicefs-pinetab-phosh
+
+installer-pinetab2-phosh:
+ extends:
+   - .installer
+   - .device-pinetab2
+   - .shell-phosh
+ needs:
+   - installfs-arm64
+   - devicefs-pinetab2-phosh
