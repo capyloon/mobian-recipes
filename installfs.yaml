@@ -33,7 +33,7 @@ actions:
       - calamares-settings-mobian
       - device-tree-compiler
       - initramfs-tools
-      - plymouth-theme-mobian
+      - plymouth-theme-capyloon
       - squashfs-tools-ng
       - u-boot-tools
       - wget
